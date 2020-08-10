@@ -33,6 +33,58 @@ def insertion_sort(array):
             j-=1
             yield array
 
+def quick_sort(array, i, j):
+    if i > j:
+        return
+    pivot = array[j]
+    pivot_index = i
+    for x in range(i, j):
+        if array[x] < pivot:
+            array[x], array[pivot_index] = array[pivot_index], array[x]
+            pivot_index += 1
+        yield array
+    array[j], array[pivot_index] = array[pivot_index], array[j]
+    yield array
+
+    yield from quick_sort(array, i, pivot_index - 1)
+    yield from quick_sort(array, pivot_index + 1, j)
+
+def merge_sort(array, left, right):
+    if right <= left:
+        return
+    elif left < right:
+        mid = (left+right)//2
+        yield from merge_sort(array, left, mid)
+        yield from merge_sort(array, mid+1, right)
+        yield from merge(array, left, mid, right)
+        yield array
+
+def merge(array, left, mid, right):
+    arr = []
+    i = left
+    j = mid+1
+    while i <= mid and j <= right:
+        if array[i] < array[j]:
+            arr.append(array[i])
+            i+=1
+        else:
+            arr.append(array[j])
+            j+=1
+    if i > mid:
+        while j <= right:
+            arr.append(array[j])
+            j+=1
+    else:
+        while i <= mid:
+            arr.append(array[i])
+            i+=1
+    for i,val in enumerate(arr):
+        array[left+i] = val
+        yield array 
+
+
+
+
 num_elems = int(input("Enter num elements: "))
 algorithm = int(input("Choose Algorithm: 1. Bubble Sort \n 2. Insertion Sort \n 3. Selection Sort \n 4. Quick Sort \n 5. Merge Sort \n 6. Radix Sort \n 7. Heap Sort \n 8. Shell Sort \n 9. Counting Sort \n"))
 array = [i+1 for i in range(num_elems)]

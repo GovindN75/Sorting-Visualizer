@@ -83,10 +83,26 @@ def merge(array, left, mid, right):
         yield array 
 
 
+def count_sort(array):
+    max_num = max(array)
+    num = max_num + 1
+    count = [0] * num
+    for i in array:
+        count[i] += 1
+        yield array
+    x = 0
+    for i in range(num):
+        for j in range(count[i]):
+            array[x] = i
+            x += 1
+            yield array
+        yield array
+
+
 
 
 num_elems = int(input("Enter num elements: "))
-algorithm = int(input("Choose Algorithm: 1. Bubble Sort \n 2. Insertion Sort \n 3. Selection Sort \n 4. Quick Sort \n 5. Merge Sort \n 6. Radix Sort \n 7. Heap Sort \n 8. Shell Sort \n 9. Counting Sort \n"))
+algorithm = int(input("Choose Algorithm: \n 1. Bubble Sort \n 2. Insertion Sort \n 3. Selection Sort \n 4. Quick Sort \n 5. Merge Sort \n 6. Radix Sort \n 7. Heap Sort \n 8. Shell Sort \n 9. Counting Sort \n"))
 array = [i+1 for i in range(num_elems)]
 random.shuffle(array)
 

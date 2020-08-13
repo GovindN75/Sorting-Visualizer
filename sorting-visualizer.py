@@ -98,11 +98,30 @@ def count_sort(array):
             yield array
         yield array
 
+def heap_sort(array):
+    num_elems = len(array)
+    for i in range(num_elems, -1, -1):
+        yield from heapify(array, num_elems, i)
+    for i in range(num_elems-1, -1, -1):
+        array[0], array[i] = array[i], array[0]
+        yield array
+        yield from heapify(array, i, 0)
 
-
+def heapify(array, num, i):
+    max_ind = i
+    left = i*2 + 1
+    right = i*2 + 2
+    while left < num and array[left] > array[max_ind]:
+        max_ind = left
+    while right < num and array[right] > array[max_ind]:
+        max_ind = right
+    if max_ind != i:
+        array[i], array[max_ind] = array[max_ind], array[i]
+        yield array
+        yield from heapify(array, num, max_ind)
 
 num_elems = int(input("Enter num elements: "))
-algorithm = int(input("Choose Algorithm: \n 1. Bubble Sort \n 2. Insertion Sort \n 3. Selection Sort \n 4. Quick Sort \n 5. Merge Sort \n 6. Radix Sort \n 7. Heap Sort \n 8. Shell Sort \n 9. Counting Sort \n"))
+algorithm = int(input("Choose Algorithm: \n 1. Bubble Sort \n 2. Insertion Sort \n 3. Selection Sort \n 4. Quick Sort \n 5. Merge Sort \n 6. Heap Sort \n 7. Counting Sort \n"))
 array = [i+1 for i in range(num_elems)]
 random.shuffle(array)
 
@@ -122,15 +141,9 @@ elif algorithm == 5:
     name = "Merge Sort"
     alg = merge_sort(array, 0, num_elems-1)
 elif algorithm == 6:
-    name = "Radix Sort"
-    alg = radix_sort(array)
-elif algorithm == 7:
     name = "Heap Sort"
     alg = heap_sort(array)
-elif algorithm == 8:
-    name = "Shell Sort"
-    alg = shell_sort(array)
-elif algorithm == 9:
+elif algorithm == 7:
     name = "Counting Sort"
     alg = count_sort(array)
 
